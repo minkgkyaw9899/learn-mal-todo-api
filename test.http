@@ -1,0 +1,18 @@
+# GET index rout
+GET http://localhost:5500
+
+###
+
+# GET users
+GET http://localhost:5500/api/users
+
+###
+
+POST http://localhost:5500/api/users
+content-type: application/json
+
+{
+  "name": "Hla Hla",
+  "email": "hlahla@gmail.com",
+  "password": "123"
+}
