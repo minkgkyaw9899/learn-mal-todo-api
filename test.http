@@ -8,11 +8,15 @@ GET http://localhost:5500/api/users
 
 ###
 
+GET http://localhost:5500/api/users/1
+
+###
+
 POST http://localhost:5500/api/users
 content-type: application/json
 
 {
-  "name": "Hla Hla",
-  "email": "hlahla@gmail.com",
-  "password": "123"
+  "name": "Su Su",
+  "email": "susus@gmail.com",
+  "password": "123123"
 }

@@ -1,0 +1,12 @@
+import z from "zod";
+
+export const idParamSchema = z.object({
+  params: z.object({
+    id: z
+      .string({ error: "Id is required and must be number" })
+      .pipe(z.coerce.number({ error: "Id must be number" }))
+      .transform((val) => Number(val)),
+  }),
+});
+
+export type IdParamSchema = z.infer<typeof idParamSchema>["params"];
