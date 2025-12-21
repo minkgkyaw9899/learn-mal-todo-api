@@ -6,12 +6,7 @@ import { createUser, findUserById, getAllUser } from "../models/user.model";
 import { Conflict, InternalServerError, NotFound } from "http-errors";
 import { successResponseFormatter } from "../lib/response-formatter";
 import { signJwt } from "../lib/jwt";
-import {
-  createUserSchema,
-  type CreateUserSchema,
-} from "../schemas/user.schema";
-import z, { ZodError } from "zod";
-import type { IdParamSchema } from "../schemas/general.schema";
+import { type CreateUserSchema } from "../schemas/user.schema";
 
 export const getAllUserController = async (req: Request, res: Response) => {
   const users = await getAllUser();
@@ -56,7 +51,7 @@ export const createUserController = async (
 };
 
 export const getUserByIdController = async (
-  req: Request<IdParamSchema>,
+  req: Request<{ id: string }>,
   res: Response,
   next: NextFunction
 ) => {
@@ -69,10 +64,6 @@ export const getUserByIdController = async (
 
     return res.json(successResponseFormatter(omit(user, ["password"])));
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      console.log(error.code);
-    }
-    // console.log("error", error);
     return next(error);
   }
 };

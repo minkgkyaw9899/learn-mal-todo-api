@@ -1,5 +1,4 @@
-import { error } from "node:console";
-import { prisma, Prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma";
 import type { CreateUserSchema } from "../schemas/user.schema";
 
 export const getAllUser = async () => {
