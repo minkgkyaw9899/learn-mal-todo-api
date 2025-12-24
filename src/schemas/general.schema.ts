@@ -8,4 +8,4 @@ export const idParamSchema = z.object({
   }),
 });
 
-export type IdParamSchema = z.infer<typeof idParamSchema>["params"];
+export type IdParamSchema = { id: string };

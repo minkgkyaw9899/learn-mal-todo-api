@@ -1,5 +1,8 @@
 import { prisma } from "../lib/prisma";
-import type { CreateUserSchema } from "../schemas/user.schema";
+import type {
+  CreateUserSchema,
+  UpdateUserSchema,
+} from "../schemas/user.schema";
 
 export const getAllUser = async () => {
   try {
@@ -21,4 +24,16 @@ export const createUser = async ({
 
 export const findUserById = async (id: number) => {
   return await prisma.user.findFirst({ where: { id } });
+};
+
+export const findUserByEmail = async (email: string) => {
+  return await prisma.user.findFirst({ where: { email } });
+};
+
+export const updateUserById = async (id: number, data: UpdateUserSchema) => {
+  return await prisma.user.update({ where: { id }, data });
+};
+
+export const deleteUserById = async (id: number) => {
+  return await prisma.user.delete({ where: { id } });
 };
