@@ -1,10 +1,10 @@
 import Redis from "ioredis";
 import config from "../config";
 
-const redis = new Redis({ password: config.redisPassword });
+export const redisClient = new Redis(config.redisUrl);
 
 export const setCache = async <T>(key: string, value: T) => {
-  return await redis.setex(
+  return await redisClient.setex(
     key,
     config.redisCacheTime,
     JSON.stringify(value, null, 2)
@@ -12,9 +12,9 @@ export const setCache = async <T>(key: string, value: T) => {
 };
 
 export const getCache = async (key: string) => {
-  return await redis.get(key);
+  return await redisClient.get(key);
 };
 
 export const removeCache = async (key: string) => {
-  return await redis.del(key);
+  return await redisClient.del(key);
 };

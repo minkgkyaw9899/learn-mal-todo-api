@@ -9,9 +9,27 @@ import { NotFound } from "http-errors";
 import authRouter from "./routes/auth.routes";
 import { authenticateToken } from "./middlewares/authenticate-token";
 import cors from "cors";
+import compression from "compression";
+import helmet from "helmet";
+
 import todoRouter from "./routes/todo.routes";
+import RedisStore, { type RedisReply } from "rate-limit-redis";
+import rateLimit from "express-rate-limit";
+import { redisClient } from "./lib/redis";
 
 const app = express();
+
+const apiLimiter = rateLimit({
+  store: new RedisStore({
+    sendCommand: (command: string, ...args: string[]) =>
+      redisClient.call(command, ...args) as Promise<RedisReply>,
+  }),
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: "Too many requests, please try again after 15 minutes",
+});
 
 app.use(
   cors({
@@ -19,6 +37,9 @@ app.use(
     methods: ["GET", "POST", "PATCH", "DELETE"],
   })
 );
+app.use(apiLimiter);
+app.use(helmet());
+app.use(compression());
 app.use(express.json());
 
 app.get("/", (req, res) => {
