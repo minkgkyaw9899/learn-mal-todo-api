@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  deleteUserByIdController,
   getAllUserController,
   getUserByIdController,
   updateUserByIdController,
@@ -20,5 +21,7 @@ userRouter.patch(
   validator(updateUserSchema),
   updateUserByIdController
 );
+
+userRouter.delete("/:id", validator(idParamSchema), deleteUserByIdController);
 
 export default userRouter;

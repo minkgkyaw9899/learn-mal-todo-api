@@ -1,20 +1,37 @@
 import express, { type ErrorRequestHandler } from "express";
 import config from "./config";
 import userRouter from "./routes/user.routes";
-import { errorResponseFormatter } from "./lib/response-formatter";
+import {
+  errorResponseFormatter,
+  successResponseFormatter,
+} from "./lib/response-formatter";
 import { NotFound } from "http-errors";
+import authRouter from "./routes/auth.routes";
+import { authenticateToken } from "./middlewares/authenticate-token";
+import cors from "cors";
+import todoRouter from "./routes/todo.routes";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: ["*"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+  })
+);
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.status(201).json({
-    message: "Up and Running",
-  });
+  res.status(201).json(
+    successResponseFormatter({
+      message: "Up and Running",
+    })
+  );
 });
 
-app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/todo", authenticateToken, todoRouter);
+app.use("/api/users", authenticateToken, userRouter);
 
 app.use((_req, _res, next) => {
   return next(NotFound("Your requested route not found"));

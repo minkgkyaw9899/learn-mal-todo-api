@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { validator } from "../middlewares/validator";
 import { createUserSchema } from "../schemas/user.schema";
-import { idParamSchema } from "../schemas/general.schema";
 import {
   signInController,
   signUpController,

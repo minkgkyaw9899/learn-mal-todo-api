@@ -4,7 +4,7 @@ import { z, type ZodObject } from "zod";
 
 export const validator =
   (schema: ZodObject) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, _res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync({
         body: req.body,
@@ -18,6 +18,7 @@ export const validator =
       if (error instanceof z.core.$ZodError) {
         console.log(error.issues);
         if (error.issues.length > 0) {
+          console.log("error.issues", error.issues[0]);
           return next(UnprocessableEntity(error.issues[0]?.message));
         }
       }

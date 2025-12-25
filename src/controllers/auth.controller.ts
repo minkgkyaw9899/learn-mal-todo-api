@@ -34,10 +34,11 @@ export const signInController = async (
           token,
         },
         201,
-        "Successfully created new user"
+        "Successfully sign up"
       )
     );
   } catch (err) {
+    console.log("error", err);
     return next(InternalServerError());
   }
 };

@@ -10,6 +10,7 @@ import { NotFound, InternalServerError } from "http-errors";
 import { successResponseFormatter } from "../lib/response-formatter";
 import type { IdParamSchema } from "../schemas/general.schema";
 import type { UpdateUserSchema } from "../schemas/user.schema";
+import { Prisma } from "../lib/prisma";
 
 export const getAllUserController = async (req: Request, res: Response) => {
   const users = await getAllUser();
@@ -76,6 +77,11 @@ export const deleteUserByIdController = async (
 
     return res.status(204);
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return next(NotFound("User not found!"));
+      }
+    }
     return next(InternalServerError());
   }
 };
