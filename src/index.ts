@@ -37,6 +37,7 @@ app.use(
     methods: ["GET", "POST", "PATCH", "DELETE"],
   })
 );
+app.set("trust proxy", 1);
 app.use(apiLimiter);
 app.use(helmet());
 app.use(compression());
@@ -63,7 +64,6 @@ app.use(((err, _req, res, _next) => {
   const status = err.status || 500;
 
   res.status(status).json(errorResponseFormatter(status, message));
-  // return next
 }) as ErrorRequestHandler);
 app.listen(config.port, () => {
   console.log(`Server up and running at ${config.port}`);

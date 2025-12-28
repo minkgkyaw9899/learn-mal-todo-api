@@ -9,6 +9,8 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url:
+      process.env["DATABASE_URL"] ??
+      "postgresql://postgres:p0stgr3sT0d0@db:5432/todo_app",
   },
 });
